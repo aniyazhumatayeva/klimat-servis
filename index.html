@@ -485,11 +485,65 @@
     box-shadow:0 10px 25px rgba(37,211,102,0.45);
     z-index:60;
     animation:pulse 2.2s infinite;
+    border:none;
+    cursor:pointer;
   }
   @keyframes pulse{
     0%{box-shadow:0 0 0 0 rgba(37,211,102,0.5);}
     70%{box-shadow:0 0 0 14px rgba(37,211,102,0);}
     100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}
+  }
+
+  /* Demo watermark badge */
+  .demo-watermark{
+    position:fixed;
+    bottom:92px;
+    right:16px;
+    background:#0f2436;
+    color:#fff;
+    opacity:0.6;
+    padding:7px 14px;
+    border-radius:8px;
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    z-index:55;
+    pointer-events:none;
+    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+  }
+  @media (max-width:680px){
+    .demo-watermark{
+      bottom:86px;
+      right:12px;
+      font-size:0.62rem;
+      padding:6px 10px;
+    }
+  }
+
+  /* Demo toast */
+  .demo-toast{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translate(-50%, 20px);
+    background:#0f2436;
+    color:#fff;
+    padding:14px 22px;
+    border-radius:12px;
+    font-size:0.9rem;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    z-index:100;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    max-width:90vw;
+    text-align:center;
+  }
+  .demo-toast.show{
+    opacity:1;
+    transform:translate(-50%, 0);
   }
 
   /* Responsive */
@@ -529,7 +583,7 @@
       <div class="logo-icon">❄</div>
       Klimat-Servis
     </div>
-    <a href="tel:+77761683552" class="header-phone">+7 776 168 3552<span>Астана, ежедневно</span></a>
+    <a href="#" class="header-phone demo-block">+7 XXX XXX XX XX<span>Астана, ежедневно</span></a>
   </div>
 </header>
 
@@ -541,7 +595,7 @@
       <h1>Забудьте о духоте и запахах — вентиляция, которая реально работает</h1>
       <p>Проектируем и монтируем вентиляционные системы для квартир, частных домов и коммерческих помещений. Подбираем оборудование под ваш объект, работаем аккуратно и не оставляем хаоса после ремонта.</p>
       <div class="hero-buttons">
-        <a class="btn btn-whatsapp" href="https://wa.me/77761683552" target="_blank" rel="noopener">
+        <a class="btn btn-whatsapp demo-block" href="#">
           <span>💬</span> Написать в WhatsApp
         </a>
         <a class="btn btn-outline" href="#form">Заявка на замер</a>
@@ -715,9 +769,9 @@
         </form>
       </div>
       <div id="formSuccess" class="form-success">
-        <div class="check">✓</div>
-        <h3>Заявка отправлена!</h3>
-        <p style="color:var(--muted);margin-top:8px;">Мы свяжемся с вами в ближайшее время для согласования замера.</p>
+        <div class="check">ℹ</div>
+        <h3>Это демо-версия сайта</h3>
+        <p style="color:var(--muted);margin-top:8px;">Заявка никуда не отправляется. Для запуска рабочего сайта свяжитесь с разработчиком.</p>
       </div>
     </div>
   </div>
@@ -733,14 +787,14 @@
         <div class="contact-icon">📞</div>
         <div>
           <h4>Телефон</h4>
-          <p><a href="tel:+77761683552">+7 776 168 3552</a></p>
+          <p><a href="#" class="demo-block">+7 XXX XXX XX XX</a></p>
         </div>
       </div>
       <div class="contact-item">
         <div class="contact-icon">💬</div>
         <div>
           <h4>WhatsApp</h4>
-          <p><a href="https://wa.me/77761683552" target="_blank" rel="noopener">Написать сообщение</a></p>
+          <p><a href="#" class="demo-block">Написать сообщение</a></p>
         </div>
       </div>
       <div class="contact-item">
@@ -758,15 +812,37 @@
   </div>
 </section>
 
-<a class="fab" href="https://wa.me/77761683552" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">💬</a>
+<button class="fab demo-block" type="button" aria-label="Написать в WhatsApp">💬</button>
+
+<div class="demo-watermark">Демо-версия</div>
+<div class="demo-toast" id="demoToast"></div>
 
 <script>
+  // Форма заявки — демо-режим: данные никуда не отправляются
   document.getElementById('requestForm').addEventListener('submit', function(e){
     e.preventDefault();
     document.getElementById('formDefault').style.display = 'none';
     var success = document.getElementById('formSuccess');
     success.classList.add('show');
     this.reset();
+  });
+
+  // Демо-заглушка для WhatsApp / телефона / внешних ссылок
+  var demoToast = document.getElementById('demoToast');
+  var demoToastTimer = null;
+  function showDemoToast(message){
+    demoToast.textContent = message;
+    demoToast.classList.add('show');
+    clearTimeout(demoToastTimer);
+    demoToastTimer = setTimeout(function(){
+      demoToast.classList.remove('show');
+    }, 2800);
+  }
+  document.querySelectorAll('.demo-block').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      showDemoToast('Демо-версия — свяжитесь с разработчиком для запуска');
+    });
   });
 </script>
 
